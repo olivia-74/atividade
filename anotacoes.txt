@@ -1,0 +1,17 @@
+npm run dev: rodar no servidor
+constantes: nao estiliza, colocar as urls
+hooks: armazena os hooks criados
+
+{objeto}
+[array]
+spread: ...
+
+useState:
+    array.map(item => {
+        return(
+            <tag>item.operator.</tag>
+        )
+    })
+    console.log(array)
+
+node server.js
