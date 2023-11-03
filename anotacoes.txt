@@ -15,3 +15,6 @@ useState:
     console.log(array)
 
 node server.js
+
+useEffect(() => {}, [])
+[] array de dependencia

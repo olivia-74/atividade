@@ -1,36 +1,76 @@
-import { useEffect } from "react"
 import axios from "axios"
-import { Container } from "./styledCard"
+import { useContext, useEffect } from "react"
+import { useState } from "react"
+import { getPostsAll } from "../../services/request"
+import { GlobalStateContext } from "../../GlobalState/GlobalStateContext"
 
-function Card(props) {
 
-    const pegarNoticias=()=>{
-        axios.get('http://localhost:8000/news')
-        .then(response => props.setNews(response.data))
-        .catch(error => console.error(error))
-    }
+function Card(){
 
-    useEffect(() =>{
-        pegarNoticias()
-    },[])
+    const[forumTopics, setForumTopics] = useState([])
+    const [loading, setLoading] = useState(true)
 
-    const novasNoticias = props.news.map((item) =>{
-        return(
-            <div key={item.id}>
-                <h2>{item.title}</h2>
-                <p>{item.content}</p>
-            </div>
+    const {selectedPostId} = useContext(GlobalStateContext)
 
-        )
-    })
+    useEffect(() => {
+        getPostsAll(setForumTopics)
+    }, [])
+  
 
-    return (
+    return(
         <>
-        <Container>
-            {novasNoticias} 
-        </Container>
-      
+        {selectedPostId ? (
+            forumTopics
+            .filter((titulo) => {
+                titulo.post_title.toLowerCase()
+                .include(selectedPostId.toLowerCase())})
+            .map((item) => {
+                <div key={item.post_id}>
+                    <p>{item.creator_username}</p>
+                </div>
+            })
+        ):(
+            <div>
+                {loading ? (
+                    <div>
+                        {forumTopics && forumTopics.map(dado =>{
+                            return(
+                                <div key={dado.post_id}>
+                                    <img src={dado.post_image}/>
+                                    <p>{dado.post_created_at}</p>
+                                    <p>{dado.post_content}</p>
+                                </div>    
+                            )
+                        })}
+                    </div>
+                ):(
+                    <p>loading...</p>
+                )}
+            </div>
+        )}
         </>
     )
 }
+
 export default Card
+
+
+// function Card(props){
+
+//     const [novoArray, loading, errorUsuario] = useRequestData('post')
+
+//     return(
+//         <>
+//             {errorUsuario && <p>Error na requisicao, aguarde!</p>}
+//             {!loading? (<div>
+//                 {novoArray && novoArray.map(dado =>{
+//                     <div key={dado.creator_id}>
+//                         <p>{dado.creator_name}</p>
+//                     </div>
+//                 })}
+//             </div>):(<p>loading...</p>)}
+//         </>
+//     )
+// }
+
+// export default Card

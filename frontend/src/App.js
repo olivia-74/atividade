@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import Rotas from './rotas/rotas';
+import { GlobalState } from './GlobalState/GlobalState';
 
 function App() {
-  const [news, setNews] = useState([])
 
   return (
       <>
-      <Rotas news={news} setNews={setNews}/>
+      <GlobalState>
+        <Rotas/>
+      </GlobalState>
       </>
   );
 }

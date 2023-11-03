@@ -15,6 +15,10 @@ export const useForm = (estadoInicial) => {
         setForm(novoForm)
     }
 
-    return[form, onChangeForm]
+    const limpar = () => {
+        setForm(estadoInicial)
+    }
+
+    return[form, onChangeForm, limpar]
 }
 
